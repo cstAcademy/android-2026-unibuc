@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name" translatable="false">UniBucFMIIF2026</string>
+
+    <string name="hello_world">Hello World!</string>
+
+    <string name="green">Green</string>
+    <string name="yellow">Yellow</string>
+    <string name="red">Red</string>
+</resources>
