@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -175,10 +176,21 @@ fun RegisterPage(
             enabled = !isLoading
         ) {
             when (isLoading) {
-                true -> CircularProgressIndicator(modifier = Modifier.height(24.dp), strokeWidth = 2.dp)
+                true -> CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                 false -> Text(stringResource(R.string.register))
             }
         }
+
+        errorMessage?.let { errMsg ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                text = errMsg
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(onClick = onLoginClick) { Text(stringResource(R.string.goto_login)) }
     }

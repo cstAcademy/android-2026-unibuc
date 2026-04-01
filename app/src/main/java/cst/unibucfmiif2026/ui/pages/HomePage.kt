@@ -2,8 +2,11 @@ package cst.unibucfmiif2026.ui.pages
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +19,7 @@ import cst.unibucfmiif2026.R
 import cst.unibucfmiif2026.ui.theme.UniBucFMIIF2026Theme
 
 @Composable
-fun HomePage() {
+fun HomePage(onLogout: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,6 +32,9 @@ fun HomePage() {
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onLogout) { Text("Logout") }
     }
 }
 

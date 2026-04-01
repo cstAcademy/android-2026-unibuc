@@ -14,6 +14,8 @@ class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _authState = MutableStateFlow(AuthState())
     val authState = _authState.asStateFlow()
+    val isLoggedIn : Boolean
+        get() = auth.currentUser != null
 
     fun login(email: String, password: String, onSuccess: () -> Unit) {
         _authState.value = AuthState(isLoading = true)
@@ -37,5 +39,9 @@ class AuthViewModel : ViewModel() {
             .addOnFailureListener { error ->
                 _authState.value = AuthState(errorMessage = error.message)
             }
+    }
+
+    fun logout() {
+        auth.signOut()
     }
 }
