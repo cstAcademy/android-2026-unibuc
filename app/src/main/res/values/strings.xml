@@ -24,6 +24,7 @@
     <string name="invalid_firstname" translatable="false">First name is invalid</string>
     <string name="invalid_lastname" translatable="false">Last name is invalid</string>
     <string name="add_user" translatable="false">Add user</string>
+    <string name="load_users" translatable="false">Load users</string>
     <string name="address_details_title" translatable="false">Address details</string>
     <string name="addresses_page_title" translatable="false">Addresses</string>
     <string name="goto_addresses_btn" translatable="false">Go to addresses</string>
@@ -33,4 +34,5 @@
     <string name="invalid_street" translatable="false">Street name is invalid</string>
     <string name="invalid_city" translatable="false">City name is invalid</string>
     <string name="no_addresses_found" translatable="false">No addresses found</string>
+    <string name="no_users_found" translatable="false">No users found</string>
 </resources>

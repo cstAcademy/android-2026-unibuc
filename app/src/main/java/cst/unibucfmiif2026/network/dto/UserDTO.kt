@@ -1,6 +1,7 @@
 package cst.unibucfmiif2026.network.dto
 
 import com.google.gson.annotations.SerializedName
+import cst.unibucfmiif2026.data.entities.UserEntity
 
 data class UserDTO(
     val id: Long,
@@ -10,6 +11,14 @@ data class UserDTO(
     @SerializedName("last_name")
     val lastName: String,
     val avatar: String
+)
+
+fun UserDTO.toEntity(addressId : Long) = UserEntity(
+    firstName = this.firstName,
+    lastName = this.lastName,
+    email = this.email,
+    avatar = this.avatar,
+    addressId = addressId
 )
 
 data class UsersResponse(

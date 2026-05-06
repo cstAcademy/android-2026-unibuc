@@ -14,7 +14,9 @@ data class UserEntity(
     @ColumnInfo(name="last_name")
     val lastName : String,
     @ColumnInfo(name = ARG_ADDRESS_ID)
-    val addressId : Long? = null
+    val addressId : Long? = null,
+    val email : String? = null,
+    val avatar : String? = null
 ) {
     companion object {
         const val ARG_ID = "id"

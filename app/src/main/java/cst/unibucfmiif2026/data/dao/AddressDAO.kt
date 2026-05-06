@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import cst.unibucfmiif2026.data.entities.AddressEntity
 import cst.unibucfmiif2026.data.entities.AddressWithUser
+import cst.unibucfmiif2026.data.entities.AddressWithUsers
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,7 +19,7 @@ interface AddressDAO {
     suspend fun delete(address: AddressEntity)
 
     @Query("SELECT * FROM addresses WHERE ${AddressEntity.ARG_ID} = :id")
-    suspend fun getById(id: Long) : AddressWithUser?
+    fun getById(id: Long) : Flow<AddressWithUsers?>
 
     @Query("SELECT * FROM addresses")
     fun getAll() : Flow<List<AddressEntity>>
