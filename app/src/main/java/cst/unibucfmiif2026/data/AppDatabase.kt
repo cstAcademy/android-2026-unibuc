@@ -14,7 +14,7 @@ import cst.unibucfmiif2026.data.entities.UserEntity
 
 @Database(
     entities = [UserEntity::class, AddressEntity::class],
-    version = 4
+    version = 5
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao () : UserDAO

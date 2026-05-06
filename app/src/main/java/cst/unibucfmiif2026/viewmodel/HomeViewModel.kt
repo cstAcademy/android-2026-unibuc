@@ -10,14 +10,4 @@ import cst.unibucfmiif2026.data.entities.UserEntity
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    private val userDao = AppDatabase.getInstance(application).userDao()
-    private val addressDao = AppDatabase.getInstance(application).addressDao()
-    fun addUser(firstname: String, lastname: String) {
-       viewModelScope.launch {
-           val addressId = addressDao.insert(AddressEntity(street = "abc", city = "abc", country = "RO"))
-           val userId = userDao.insert(UserEntity(firstName = firstname, lastName = lastname, addressId = addressId))
-           val result = addressDao.getById(addressId)
-           Log.e("tag", "$result")
-       }
-    }
 }
