@@ -14,6 +14,7 @@ data class UserDTO(
 )
 
 fun UserDTO.toEntity(addressId : Long) = UserEntity(
+    id = this.id,
     firstName = this.firstName,
     lastName = this.lastName,
     email = this.email,

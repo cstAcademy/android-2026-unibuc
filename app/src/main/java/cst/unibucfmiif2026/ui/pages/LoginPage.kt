@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cst.unibucfmiif2026.BuildConfig
 import cst.unibucfmiif2026.ui.theme.UniBucFMIIF2026Theme
 import cst.unibucfmiif2026.utils.isValidEmail
 import cst.unibucfmiif2026.utils.isValidPassword
@@ -45,7 +46,8 @@ import cst.unibucfmiif2026.utils.isValidPassword
 @Composable
 fun LoginPage(
     onRegisterClick: () -> Unit = {},
-    onLoginClick: (email:String, password: String, onSuccess: () -> Unit) -> Unit = {_, _, _ ->},
+    onLoginClickFirebase: (email:String, password: String, onSuccess: () -> Unit) -> Unit = { _, _, _ ->},
+    onLoginClickApi: (email:String, password: String, onSuccess: () -> Unit) -> Unit = { _, _, _ ->},
     onLoginSuccess : () -> Unit = {},
     isLoading : Boolean = false,
     errorMessage : String? = null
@@ -57,6 +59,10 @@ fun LoginPage(
     var passwordError by remember { mutableStateOf<String?>(null) }
     val invalidEmailMessage = stringResource(R.string.invalid_email)
     val invalidPasswordMessage = stringResource(R.string.invalid_password)
+    if (BuildConfig.DEBUG) {
+        email = "eve.holt@reqres.in"
+        password = "cityslicka"
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -167,7 +173,7 @@ fun LoginPage(
                     isValid = false
                 }
 
-                if (isValid) onLoginClick(
+                if (isValid) onLoginClickFirebase(
                     email,
                     password,
                     onLoginSuccess
@@ -177,7 +183,34 @@ fun LoginPage(
         ) {
             when (isLoading) {
                 true -> CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
-                false -> Text(stringResource(R.string.login))
+                false -> Text(stringResource(R.string.login_firebase))
+            }
+        }
+
+        Button(
+            onClick = {
+                var isValid = true
+                if (!email.isValidEmail()) {
+                    emailError = invalidEmailMessage
+                    isValid = false
+                }
+
+                if (!password.isValidPassword()) {
+                    passwordError = invalidPasswordMessage
+                    isValid = false
+                }
+
+                if (isValid) onLoginClickApi(
+                    email,
+                    password,
+                    onLoginSuccess
+                ) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading
+        ) {
+            when (isLoading) {
+                true -> CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+                false -> Text(stringResource(R.string.login_api))
             }
         }
 
