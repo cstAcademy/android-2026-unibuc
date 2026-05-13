@@ -24,8 +24,9 @@ import cst.unibucfmiif2026.viewmodel.AuthViewModel
 fun AuthNavigation(authViewModel: AuthViewModel = viewModel()) {
     val navController = rememberNavController()
     val authState by authViewModel.authState.collectAsState()
+    val isLoggedInApiState by authViewModel.hasLoggedInApi.collectAsState()
     val navigateToHome: () -> Unit = { navController.navigate("homepage") }
-    val startDestination = when (authViewModel.isLoggedIn) {
+    val startDestination = when (authViewModel.isLoggedInFirebase || isLoggedInApiState != null) {
         true -> "homepage"
         false -> "login"
     }
@@ -37,7 +38,8 @@ fun AuthNavigation(authViewModel: AuthViewModel = viewModel()) {
                 onRegisterClick = {
                     navController.navigate("register")
                 },
-                onLoginClick = authViewModel::login,
+                onLoginClickFirebase = authViewModel::loginWithFirebase,
+                onLoginClickApi = authViewModel::loginWithApi,
                 onLoginSuccess = navigateToHome,
                 isLoading = authState.isLoading,
                 errorMessage = authState.errorMessage

@@ -1,7 +1,11 @@
 package cst.unibucfmiif2026.network
 
 import cst.unibucfmiif2026.BuildConfig
+import cst.unibucfmiif2026.data.AuthDataStore
+import cst.unibucfmiif2026.network.api.AuthApiService
 import cst.unibucfmiif2026.network.api.UsersApiService
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,22 +23,50 @@ object RetrofitClient {
         chain.proceed(request)
     }
 
+    private val authTokenInterceptor = Interceptor { chain ->
+        val token = runBlocking {
+            AuthDataStore.tokenFlow.first()
+        } ?: ""
+        val request = chain
+            .request()
+            .newBuilder()
+            .addHeader("Authorization", token)
+            .build()
+        chain.proceed(request)
+    }
+
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val okHttpClient = OkHttpClient
         .Builder()
-        .addInterceptor(loggingInterceptor)
         .addInterceptor(apiKeyInterceptor)
+        .addInterceptor(loggingInterceptor)
+        .build()
+
+    private val okHttpClientAuthorized = OkHttpClient
+        .Builder()
+        .addInterceptor(apiKeyInterceptor)
+        .addInterceptor(authTokenInterceptor)
+        .addInterceptor(loggingInterceptor)
         .build()
 
     val usersApi : UsersApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient)
+            .client(okHttpClientAuthorized)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(UsersApiService::class.java)
+    }
+
+    val authApi : AuthApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AuthApiService::class.java)
     }
 }
